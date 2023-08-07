@@ -55,7 +55,7 @@
             android:textSize="15sp" />
 
         <EditText
-            android:id="@+id/edtTxtPassword1"
+            android:id="@+id/registerPassword1"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -67,7 +67,7 @@
             android:minHeight="48dp"
             android:textSize="15sp" />
         <EditText
-            android:id="@+id/edtTxtPassword2"
+            android:id="@+id/registerPassword2"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -97,7 +97,7 @@
         app:srcCompat="@drawable/path2114" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnRegister"
         android:layout_width="250dp"
         android:layout_height="41dp"
         android:layout_marginStart="8dp"

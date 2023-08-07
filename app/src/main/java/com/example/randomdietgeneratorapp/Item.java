@@ -4,13 +4,11 @@ public class Item {
 
     private String imageUrl;
     private String title;
-    private double calorie;
 
-    public Item(String imageUrl, String tags, int likes) {
+    public Item(String imageUrl, String title) {
         
         this.imageUrl = imageUrl;
-        this.title = tags;
-        this.calorie = likes;
+        this.title = title;
     }
 
     public String getImageUrl() {
@@ -19,10 +17,6 @@ public class Item {
 
     public String getTitle() {
         return title;
-    }
-
-    public double getCalorie() {
-        return calorie;
     }
 
 }

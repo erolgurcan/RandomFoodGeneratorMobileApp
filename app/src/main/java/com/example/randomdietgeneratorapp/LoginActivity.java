@@ -3,6 +3,8 @@ package com.example.randomdietgeneratorapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,9 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.randomdietgeneratorapp.databinding.ActivityLoginBinding;
-
-import org.w3c.dom.Text;
+import com.example.randomdietgeneratorapp.database.FeedReaderDbHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,23 +42,32 @@ public class LoginActivity extends AppCompatActivity {
         Animation fadeInAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
         imageView.startAnimation(fadeInAnimation);
 
+        FeedReaderDbHelper dbHelper = new FeedReaderDbHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String userEmail = email.getText().toString().trim();
+                String userPassword = password.getText().toString().trim();
 
-               if(email.getText().toString().equals("") ||  password.getText().toString().equals("")){
-                   Toast.makeText(LoginActivity.this, "Email or Password field empty", Toast.LENGTH_SHORT).show();
-                }else {
+                // Call the method to check if the user exists in the database
+                boolean userExists = dbHelper.checkUserCredentials(userEmail, userPassword);
 
-//                   if(!databaseHelper.checkEmail(email.getText().toString() ))   {
-//                       Toast.makeText(LoginActivity.this, "User Not Found", Toast.LENGTH_SHORT).show();
-//                   }
-//
-//                   if(!databaseHelper.checkEmailPassword(email.getText().toString(), password.getText().toString())){
-//                       Toast.makeText(LoginActivity.this, "Incorrect Password", Toast.LENGTH_SHORT).show();
-//                   }
-               }
+                if (userExists) {
+                    // User exists, proceed to the next activity or perform the desired action
+                    Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+
+                    Intent fetchIntent = new Intent(LoginActivity.this, FetchData.class);
+
+                    // Add user information as extras to the Intent
+                    fetchIntent.putExtra("user_email", userEmail);
+                    // Add any other user information you want to pass to the FetchData activity
+                    startActivity(fetchIntent);
+                } else {
+                    // User does not exist or the provided credentials are incorrect
+                    Toast.makeText(LoginActivity.this, "Invalid email or password.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
