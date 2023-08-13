@@ -22,15 +22,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnToRegister);
 
-        btnFetchData = findViewById(R.id.btnFetchData);
-
-        btnFetchData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InitiateFetchDataActivity();
-            }
-        });
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

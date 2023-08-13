@@ -7,4 +7,16 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- Other string resources -->
+
+    <string name="select_cuisine_type">Select Cuisine Type</string>
+    <string name="food_title">Food Title</string>
+    <string name="calories">Calories:</string>
+
+    <string-array name="cuisine_types">
+        <item>Asian</item>
+        <item>Italian</item>
+        <!-- Add more cuisine types here as needed -->
+    </string-array>
+
 </resources>

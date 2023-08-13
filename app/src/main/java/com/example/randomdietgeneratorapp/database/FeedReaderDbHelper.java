@@ -17,12 +17,17 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE IF NOT EXISTS user (_id INTEGER PRIMARY KEY, name TEXT, email TEXT, password TEXT)";
+
+    private static final String SQL_CREATE_USER_FOOD_ENTRIES =
+            "CREATE TABLE IF NOT EXISTS userFood (_id INTEGER PRIMARY KEY, userEmail TEXT, foodId INTEGER)";
+
     public FeedReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_USER_FOOD_ENTRIES);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -52,5 +57,32 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
 
         return userExists;
     }
+
+    public String getUserNameByEmail (String email){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = {
+                "name"
+        };
+
+        String selection = "email = ?";
+        String[] selectionArgs = {email};
+
+        Cursor cursor = db.query("user", projection, selection, selectionArgs, null, null, null);
+
+        String userName = null;
+
+        if (cursor != null && cursor.moveToFirst()){
+            int nameColumnIndex = cursor.getColumnIndex("name");
+            if (nameColumnIndex != -1) {
+                userName = cursor.getString(nameColumnIndex);
+            }
+        }
+
+        return userName;
+    };
+
+
 }
 

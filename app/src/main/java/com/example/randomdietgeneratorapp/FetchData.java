@@ -1,5 +1,6 @@
 package com.example.randomdietgeneratorapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +28,22 @@ public class FetchData extends AppCompatActivity {
     private RequestQueue requestQueue;
     private List<Item> list;
 
+    private String selectedCuisine;
+
+    private String maxCalories;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fetch_data);
+
+
+        Intent intent = getIntent();
+        if (intent !=null){
+            this.selectedCuisine = intent.getStringExtra("selectedCuisine");
+            this.maxCalories = intent.getStringExtra("maxCalories");
+        }
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -42,7 +56,8 @@ public class FetchData extends AppCompatActivity {
     }
 
     private void fetchFood() {
-        String url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=41a942b9d8c9466186d2006ed5e66bd6&cuisine=Asian&query=Pasta";
+
+        String url = "https://api.spoonacular.com/recipes/complexSearch?apiKey=41a942b9d8c9466186d2006ed5e66bd6&cuisine=" + selectedCuisine +"&maxCalories=" + maxCalories;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -54,8 +69,12 @@ public class FetchData extends AppCompatActivity {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String imageUrl = jsonObject.getString("image");
                         String title = jsonObject.getString("title");
+                        Integer id = jsonObject.getInt("id");
 
-                        Item item = new Item(imageUrl, title);
+                        JSONObject nutrients = (JSONObject) jsonObject.getJSONObject("nutrition").getJSONArray("nutrients").get(0);
+                        String calories = nutrients.getString("amount");
+
+                        Item item = new Item(imageUrl, title, calories, id);
                         list.add(item);
                     }
 
